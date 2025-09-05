@@ -16,6 +16,7 @@ if(USE_FREERTOS)
 
     # Add FreeRTOS as a subdirectory
     add_subdirectory(FreeRTOS)
+    add_subdirectory(CANLineX2Graphics)
 
     # FreeRTOS-specific include directories
     include_directories(${PROJECT_SOURCE_DIR}/FreeRTOS/include)
@@ -32,6 +33,7 @@ else()
     message(STATUS "FreeRTOS is disabled")
     set(FREERTOS_SOURCES "")  # No FreeRTOS sources if FreeRTOS is disabled
 endif()
+
 
 # Main include files of the project
 include_directories(${PROJECT_SOURCE_DIR}/main/inc)
@@ -63,10 +65,11 @@ add_compile_definitions($<$<BOOL:${LV_USE_FFMPEG}>:LV_USE_FFMPEG=1>)
 
 # Add LVGL subdirectory
 add_subdirectory(lvgl)
+add_subdirectory(CANLineX2Graphics)
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 
 set(MAIN_SOURCES src/mouse_cursor_icon.c src/hal/hal.c)
-set(MAIN_LIBS lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES})
+set(MAIN_LIBS LVGLGraphicsLIB lvgl lvgl::examples lvgl::demos lvgl::thorvg ${SDL2_LIBRARIES})
 
 # Create the main executable, depending on the FreeRTOS option
 if(USE_FREERTOS)
@@ -75,6 +78,7 @@ if(USE_FREERTOS)
 else()
     list(APPEND MAIN_SOURCES src/main.c)
 endif()
+
 
 
 if(NOT MSVC)
@@ -98,6 +102,8 @@ if(LV_USE_LIBPNG)
     target_include_directories(lvgl PUBLIC ${PNG_INCLUDE_DIRS})
     list(APPEND MAIN_LIBS ${PNG_LIBRARIES})
 endif()
+
+
 
 # Conditionally include and link libjpeg-turbo if LV_USE_LIBJPEG_TURBO is enabled
 if(LV_USE_LIBJPEG_TURBO)
@@ -162,7 +168,11 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         -Wstrict-aliasing
     )
 
-if (ASAN)
+    target_link_libraries(main LVGLGraphicsLIB)
+
+
+
+    if (ASAN)
     message(STATUS "AddressSanitizer enabled")
 
     # Add AddressSanitizer flags

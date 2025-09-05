@@ -7,3 +7,6 @@
 [submodule "FreeRTOS"]
 	path = FreeRTOS
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
+[submodule "CANLineX2Graphics"]
+	path = CANLineX2Graphics
+	url = https://github.com/RIPHeisenberg/CANLineX2Graphics.git

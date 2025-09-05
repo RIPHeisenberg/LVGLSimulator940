@@ -24,6 +24,9 @@
 #include "lvgl/demos/lv_demos.h"
 #include <SDL.h>
 
+#include "CANLineX2Graphics/LVGLBarTest.h"
+#include "CANLineX2Graphics/DisplayStateMachine.h"
+
 #include "hal/hal.h"
 
 /*********************
@@ -125,20 +128,14 @@ int main(int argc, char **argv)
   /* - lv_demo_stress(); */
   /* - lv_example_label_1(); */
   /* - etc. */
-  lv_demo_widgets();
+  // lv_demo_widgets();
 
-  while(1) {
-    /* Periodically call the lv_task handler.
-     * It could be done in a timer interrupt or an OS task too.*/
-    uint32_t sleep_time_ms = lv_timer_handler();
-    if(sleep_time_ms == LV_NO_TIMER_READY){
-	sleep_time_ms =  LV_DEF_REFR_PERIOD;
-    }
-#ifdef _MSC_VER
-    Sleep(sleep_time_ms);
-#else
-    usleep(sleep_time_ms * 1000);
-#endif
+ DisplayStateMachine_init();
+
+  while(1)
+  {
+   DisplayStateMachine_handler();
+   usleep(5*100);
   }
 
   return 0;
