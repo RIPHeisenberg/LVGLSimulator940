@@ -26,6 +26,8 @@
 
 #include "CANLineX2Graphics/LVGLBarTest.h"
 #include "CANLineX2Graphics/DisplayStateMachine.h"
+#include "CANLineX2Graphics/ClockWindow.h"
+#include "CANLineX2Graphics/SpielWiese.h"
 
 #include "hal/hal.h"
 
@@ -128,7 +130,9 @@ int main(int argc, char **argv)
   /* - lv_demo_stress(); */
   /* - lv_example_label_1(); */
   /* - etc. */
-  DisplayStateMachine_init();
+  SpielWiese_init();
+  SpielWiese_load();
+  //DisplayStateMachine_init();
   //lv_demo_widgets();
 
   while(1) {
@@ -138,7 +142,8 @@ int main(int argc, char **argv)
     if(sleep_time_ms == LV_NO_TIMER_READY){
 	sleep_time_ms =  LV_DEF_REFR_PERIOD;
 
-     DisplayStateMachine_handler();
+     //DisplayStateMachine_handler();
+
     }
 #ifdef _MSC_VER
     Sleep(sleep_time_ms);
