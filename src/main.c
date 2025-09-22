@@ -28,7 +28,7 @@
 #include "CANLineX2Graphics/DisplayStateMachine.h"
 #include "CANLineX2Graphics/ClockWindow.h"
 #include "CANLineX2Graphics/SpielWiese.h"
-
+#include "CANLineX2Graphics/ChartData.h"
 #include "hal/hal.h"
 
 /*********************
@@ -130,9 +130,11 @@ int main(int argc, char **argv)
   /* - lv_demo_stress(); */
   /* - lv_example_label_1(); */
   /* - etc. */
-  // SpielWiese_init();
-  // SpielWiese_load();
+  //SpielWiese_init();
+  //SpielWiese_load();
   DisplayStateMachine_init();
+  ChartData_init();
+
   //lv_demo_widgets();
 
   while(1) {
