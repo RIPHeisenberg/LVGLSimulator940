@@ -16,6 +16,7 @@ if(USE_FREERTOS)
 
     # Add FreeRTOS as a subdirectory
     add_subdirectory(FreeRTOS)
+    add_subdirectory(CANLineX2Interface)
     add_subdirectory(CANLineX2Graphics)
 
     # FreeRTOS-specific include directories
@@ -65,6 +66,7 @@ add_compile_definitions($<$<BOOL:${LV_USE_FFMPEG}>:LV_USE_FFMPEG=1>)
 
 # Add LVGL subdirectory
 add_subdirectory(lvgl)
+add_subdirectory(CANLineX2Interface)
 add_subdirectory(CANLineX2Graphics)
 target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 

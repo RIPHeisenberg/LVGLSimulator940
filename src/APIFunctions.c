@@ -10,8 +10,8 @@ void HALDelay(void)
 }
 
 
-bool ConfigurationHandler_SettingsDescriptor_get(Configuration_SettingsDescriptor_t *descriptor)
+bool ConfigurationHandler_SettingsDescriptor_get(Configuration_SettingsDescriptor_t **descriptor)
 {
-    *descriptor = settingsConfigurationFlash;
+    *descriptor = &settingsConfigurationFlash;
     return true;
 }

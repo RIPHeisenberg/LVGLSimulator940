@@ -25,6 +25,17 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+//! \def NR_OF_SENSORS
+//! Maximum number of connected gas sensors.
+#define NR_OF_SENSORS  32u
+
+//! \def NR_OF_ALARMS
+//! Number of possible alarm levels.
+#define NR_OF_ALARMS    2u
+
+//! \def NR_OF_RELAYS
+//! Maximum number of relays.
+#define NR_OF_RELAYS  2u
 //! \addtogroup Configuration
 //! @{
 
@@ -50,6 +61,9 @@
 #define App_HW_RELAYTIMERS_NR       4U                    // Number of supported relay timers
 #define App_ALARMLEVELS_NR          4U                    // Number of supported alarm levels
 
+//! Number of average values
+//static const uint16_t averageValueNr = 15U;
+#define averageValueNr 15U
 
 typedef enum
 {
@@ -95,6 +109,203 @@ typedef enum
     GD_SS_INACTIVATED  // GD_SS_INACTIVATED_TEMPORARLY or GD_SS_INACTIVATED_PERMANENTLY
 } GasDetection_SensorState_t;
 
+typedef enum
+{
+    INH_NONE, // inhibit not active
+    INH_TEMP, // inhibit 4h
+    INH_PERM  // inhibit permanent
+} InhModes_t;
+
+//! \enum SensorType_t
+//! List of possible SensorTypes.
+typedef enum
+{
+    SNS_EMPTY,         //!< no sensor attached
+    SNS_ELCHEM,        //!< El-Chemical sensor
+    SNS_NDIR,          //!< NDIR Std Sensor
+    SNS_ZIRKON,        //!< Zirkonium O2 Sensor
+    SNS_PELLISTOR,     //!< Pellistor Sensor
+    SNS_SEMICONDUCTOR, //!< Semiconductor Sensor
+    SNS_EA_CO2,        //!< Electro Acustic CO2 Sensor
+    SNS_HUMIDITY,      //!< Humidity Sensor
+    SNS_UNDEF          //!< undefined sensor
+} SensorType_t;
+
+//! \enum SensorBoard_t
+//! Sensor Board
+typedef enum
+{
+    SB_NO_BOARD, //!< no valid channel active
+    SB_CH1,      //!< Channel1 active
+    SB_CH2,      //!< Channel2 active
+    SB_BOTH      //!< Both Channels active
+  } SensorBoard_t;
+
+//! \enum AlarmModes_t
+//! Alarm modes.
+typedef enum
+{
+    AT_M_NORMAL, // normal mode: upper value = alarm
+    AT_M_OXYGEN, // reverse mode: lower value = alarm
+    AT_M_WINDOW  // range mode: lower = main alarm, upper = pre-alarm
+} AlarmModes_t;
+
+//! \enum FaultNr_t
+//! Fault number types.
+typedef enum
+{
+    FNR_NOFAULT,      //!< no fault
+    FNR_ADOF,         //!< AD overflow
+    FNR_ADUF,         //!< AD underflow
+    FNR_CALIBRATION,  //!< missing calibration
+    FNR_POWER24V,     //!< 24V power too low
+    FNR_POWER5V,      //!< 5V power too low
+    FNR_NTC,          //!< temperature sensor failure
+    FNR_EEPROM,       //!< EEPROM failure
+    FNR_CPUTEMP,      //!< CPU temperature outside sensor specific limit
+    FNR_SYSTEM,       //!< watchdog CRC or RAM failure
+    FNR_OFFLINE,      //!< sensor offline (no CAN responses)
+    FNR_BLOCKED,      //!< sensor blocked (no CAN counter changes)
+    FNR_OBJ_LOSS      //!< object missing
+} FaultNr_t;
+
+//! \addtogroup Sensors
+//! @{
+
+typedef int16_t Sensors_Value20mA_t;  // 20mA values are stored in �A
+typedef int16_t Sensors_Value_t;
+
+//! \struct Sensor_t
+//! Sensor variables structure.
+typedef struct
+{
+  uint8_t On;                          //!< on off decrement status counter of sensor
+  uint8_t Objects;                     //!< Check byte 1bit per TPDO object
+  InhModes_t Inhibit;                  //!< inhibit status
+  uint8_t CommVersionMain;             //!< main communication version number
+  uint8_t CommVersionSub;              //!< sub communication version number
+  SensorType_t  SensorType;            //!< definition of sensor type
+  SensorBoard_t SensorBoardType;       //!< channel definition of sensor
+  AlarmModes_t AlarmMode;              //!< alarm mode
+  bool Failed;                         //!< set, when on off decrement counter hits one
+  bool Detected;                       //!< set, when sensor response on CAN is received
+  bool SetAdjRequest;                  //!< set, when factory setup command needs to be sent
+  char FWversion[8];                   //!< firmware version
+  char GasType[6];                     //!< gas type string (i.e. CO or NO2)
+  char GasUnit[6];                     //!< gas unit string (i.e. PPM)
+  int16_t GasEndValue;                 //!< integer end value of concentration range
+  int16_t StartupConcentration;        //!< integer value of defined startup concentration
+  uint8_t DecimalPoint;                //!< decimal point definition of concentration
+  uint8_t MaxDecimalPoint;             //!< maximum decimal point to be displayed on OLED
+  uint8_t Faults;                      //!< channel fault
+  uint8_t SysFaults;                   //!< system fault
+  FaultNr_t FaultNr;                   //!< first detected fault number (priority weighed)
+  uint8_t AlarmByte;                   //!< bit pattern of alarms
+  uint8_t StoredAlarmByte;             //!< bit pattern of alarms that have occured
+  uint16_t InhTimer;                   //!< timer to handle 4h inhibit
+  int16_t Temperature;                 //!< sensor temperature
+  int16_t GasResult;                   //!< integer gas concentration (raw unprocessed value)
+  int16_t GasBusResult;                //!< integer gas concentration after processing defined rules
+  int16_t GasResultuA;                 //!< integer gas result in uA
+  int16_t GasResultPermille;           //!< relative gas concentration in per-mill of end value
+  int16_t InputValue;                  //!< sensor input value during setup mode
+  int16_t InputAvVal;                  //!< sensor input average value during setup mode
+  uint16_t CanCounter;                 //!< response counter
+  int16_t AlarmValues[NR_OF_ALARMS];   //!< average gas concentration integer part
+  int8_t AlarmAvgMin[NR_OF_ALARMS];    //!< average time in minutes (-1 = alarm not used)
+  uint16_t AlarmOnVal[NR_OF_ALARMS];   //!< alarm on level gas concentration integer part
+  uint16_t AlarmOffVal[NR_OF_ALARMS];  //!< alarm off level gas concentration integer part
+  uint16_t AlarmOnDelay[NR_OF_ALARMS]; //!< alarm on delay time in seconds
+  uint16_t AlarmOffDelay[NR_OF_ALARMS];//!< alarm off delay time in seconds
+  uint16_t Power24V;                   //!< Voltage 2400 == 24.00V
+  int16_t AlarmProfile;                //!< alarm profile (alarm definition) of sensor
+  bool AlarmProfileWarning;            //!< CO profile different than in other sensors
+} Sensor_t;
+//! @}  close group Sensor_public_typedefs
+
+//! \typedef RTC_Time_t
+//! Time base type, equivalent to time_t from time.h - UNIX time stamp in
+//! seconds since 1-Jan-70
+typedef uint32_t RTC_Time_t;
+
+
+//! \struct RTC_SetTimeDate_t
+//! Time and date base type, equivalent to \p struct \p tm from time.h
+typedef struct
+{
+    uint8_t Sec;   //!< seconds 0 to 60 (60 allowed for the occasional leap second)
+    uint8_t Min;   //!< minutes , 0 to 59
+    uint8_t Hour;  //!< hours since midnight, 0 to 23
+    uint8_t Day;   //!< day of the month, 1 to 31
+    uint8_t Month; //!< months since January, 0 to 11
+    uint8_t Year;  //!< years since 2000
+} RTC_SetTimeDate_t;
+
+typedef enum
+{
+    OS_STARTUP,
+    OS_ACTIVE,
+    OS_GO_INACTIVE_TEMPORARLY,
+    OS_GO_INACTIVE_PERMANENTLY,
+    OS_INACTIVE_TEMPORARLY,
+    OS_INACTIVE_PERMANENTLY,
+    OS_OFF
+  } OperatingStates_t;
+//! Dynamic sensor parameters
+
+//! Alarm states
+typedef enum
+{
+    AS_OFF,
+    AS_ONDELAYED,
+    AS_ON,
+    AS_OFFDELAYED
+  } AlarmStates_t;
+//! Dynamic alarm parameters
+
+typedef struct
+{
+    uint16_t TimerS : 14;   //lint !e46
+    AlarmStates_t State : 2;
+} __attribute__((packed))AlarmParameters_t;
+
+typedef struct
+{
+    int32_t SingleSum;
+    Sensors_Value_t Values[averageValueNr];
+    uint8_t ValueIndex;
+    uint8_t TimerS;
+} __attribute__((packed))MovingAverage_t;
+
+typedef  struct
+{
+    uint8_t OperatingTimerSM; // seconds or minutes
+    bool OutOfRange : 1;
+    OperatingStates_t OperatingState : 3;
+    AlarmParameters_t Fault;
+    AlarmParameters_t Alarm[App_ALARMLEVELS_NR];    // Alarm 1, 2, 3, 4 (main alarm)
+    Sensors_Value_t SensorValue[GD_VS_NR];
+    MovingAverage_t MovingAverage;
+} __attribute__((packed))SensorStates_t;
+
+//! \struct RTC_TimeDate_t
+//! Time and date base type, equivalent to \p struct \p tm from time.h
+typedef struct
+{
+    uint8_t Sec;   //!< seconds 0 to 60 (60 allowed for the occasional leap second)
+    uint8_t Min;   //!< minutes , 0 to 59
+    uint8_t Hour;  //!< hours since midnight, 0 to 23
+    uint8_t MDay;  //!< day of the month, 1 to 31
+    uint8_t Mon;   //!< months since January, 0 to 11
+    uint8_t Year;  //!< years since 1900
+    uint8_t WDay;  //!< days since Sunday, 0 to 6
+    uint16_t YDay; //!< days since January 1, 0 to 365
+} RTC_TimeDate_t;
+
+
+
+//! @}  close group RTC_public_typedefs
+
 //! Fault alarm causes (bitwise)
 typedef struct
 {
@@ -102,7 +313,58 @@ typedef struct
     bool OverRange : 1;
 } GasDetection_FaultAlarmCauses_t;
 
+//! Relay test states
+typedef enum
+{
+    //! Relay coil off
+    RM_TC_OFF = false,
+    //! Relay coil on
+    RM_TC_ON = true,
+    //! No relay coil test
+    RM_TC_NOTEST
+  } RelayManager_TestCoil;
+
+//! Dynamic relay properties
+typedef struct
+{
+    //! Relay on timer (seconds)
+    uint16_t MaxOnTimer : 12;  //lint !e46
+    //! Test state
+    RelayManager_TestCoil TestCoil : 2;
+    //! Wait for manual (user) reset
+    bool WaitForManualReset : 1;
+    //! Relay has reached maximal on time
+    bool MaxOnTimedOut : 1;
+} relay_t;
+
 typedef uint32_t Bit_128_t[App_SEGMENTS_NR];
+
+typedef enum
+{
+    ES_FREE,
+    ES_INHIBIT_BUSY,
+    ES_FAULT_BUSY,
+    ES_AL3_BUSY,
+    ES_AL4_BUSY,
+    ES_INHIBIT_CLOSED,
+    ES_FAULT_CLOSED,
+    ES_AL3_CLOSED,
+    ES_AL4_CLOSED,
+    ES_LAST
+} EntryStatus_t;
+
+
+typedef struct
+{
+    EntryStatus_t Status;
+    uint8_t SensorIndex;
+    int32_t MaxLevel;
+    uint32_t StartTime;
+    uint32_t MaxTime;
+    uint32_t EndTime;
+    uint16_t PlotValuesLength;
+    Sensors_Value20mA_t PlotValues[60]; // Plot buffer for 4 Hours
+} HistoryEntry_t;
 
 //! Alarm properties
 typedef struct
