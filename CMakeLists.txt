@@ -173,8 +173,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
     target_link_libraries(main LVGLGraphicsLIB)
 
-
-
     if (ASAN)
     message(STATUS "AddressSanitizer enabled")
 
@@ -187,3 +185,4 @@ else()
     message(STATUS "AddressSanitizer disabled")
 endif()
 endif()
+

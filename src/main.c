@@ -30,6 +30,8 @@
 #include "CANLineX2Graphics/SpielWiese.h"
 #include "CANLineX2Graphics/ChartData.h"
 #include "hal/hal.h"
+#include "CANLineX2Graphics/RingBuffer.h"
+#include "CANLineX2Interface/TimeoutServer/TimeoutServer.h"
 
 /*********************
  *      DEFINES
@@ -130,23 +132,26 @@ int main(int argc, char **argv)
   /* - lv_demo_stress(); */
   /* - lv_example_label_1(); */
   /* - etc. */
-  //SpielWiese_init();
-  //SpielWiese_load();
-  DisplayStateMachine_init();
-  ChartData_init();
+  SpielWiese_init();
+  SpielWiese_load();
+  //DisplayStateMachine_init();
+  //ChartData_init();
+  //RingBuffer_test();
 
   //lv_demo_widgets();
 
   while(1) {
     /* Periodically call the lv_task handler.
      * It could be done in a timer interrupt or an OS task too.*/
+
+   //TimeoutServer_handler();
     uint32_t sleep_time_ms = lv_timer_handler();
     if(sleep_time_ms == LV_NO_TIMER_READY){
 	sleep_time_ms =  LV_DEF_REFR_PERIOD;
 
 
     }
-   DisplayStateMachine_handler();
+   //DisplayStateMachine_handler();
 
    #ifdef _MSC_VER
     Sleep(sleep_time_ms);
