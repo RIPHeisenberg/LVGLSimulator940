@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     /* Periodically call the lv_task handler.
      * It could be done in a timer interrupt or an OS task too.*/
 
-   //TimeoutServer_handler();
+   TimeoutServer_handler();
     uint32_t sleep_time_ms = lv_timer_handler();
     if(sleep_time_ms == LV_NO_TIMER_READY){
 	      sleep_time_ms =  LV_DEF_REFR_PERIOD;
