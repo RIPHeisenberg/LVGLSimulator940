@@ -137,9 +137,6 @@ int main(int argc, char **argv)
   //SpielWiese_load();
   DisplayStateMachine_init();
   //ChartData_init();
-  //RingBuffer_test();
-
-  //lv_demo_widgets();
 
   while(1) {
     /* Periodically call the lv_task handler.
