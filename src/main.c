@@ -136,6 +136,7 @@ int main(int argc, char **argv)
   //SpielWiese_init();
   //SpielWiese_load();
   DisplayStateMachine_init();
+
   //ChartData_init();
 
   while(1) {
