@@ -1,0 +1,77 @@
+# Generated from CLion C/C++ Code Style settings
+---
+Language: C
+BasedOnStyle: LLVM
+
+AccessModifierOffset: -4
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignOperands: true
+AlignTrailingComments: false
+AlwaysBreakTemplateDeclarations: Yes
+
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: false
+  AfterControlStatement: true   # <- brace on new line for if/for/while
+  AfterEnum: false
+  AfterFunction: true           # <- brace on new line for functions
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  BeforeLambdaBody: false
+  BeforeWhile: false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
+
+BreakBeforeBraces: Allman       # <- Allman style
+
+BreakConstructorInitializers: AfterColon
+BreakConstructorInitializersBeforeComma: false
+ColumnLimit: 120
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ContinuationIndentWidth: 8
+
+# Includes
+IncludeCategories: []           # <- disable category-based grouping
+IncludeIsMainRegex: '([-_](test|unittest))?$'
+SortIncludes: false             # <- don't reorder includes
+
+IndentCaseLabels: false         # <- case labels not indented
+IndentWidth: 2                  # <- 2-space indent
+TabWidth: 2
+UseTab: Never                   # <- no tabs
+
+InsertNewlineAtEOF: true
+MacroBlockBegin: ''
+MacroBlockEnd: ''
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+
+SpaceAfterCStyleCast: true
+SpaceAfterTemplateKeyword: false
+SpaceBeforeRangeBasedForLoopColon: false
+SpaceInEmptyParentheses: false
+SpacesInAngles: false
+SpacesInConditionalStatement: false
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+
+SpaceBeforeParens: ControlStatements  # "if (x)" but "func(x)"
+SpaceAfterLogicalNot: false
+
+ReflowComments: Always                 # don't re-wrap comments
+
+# Short statements
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+
+# Pointers
+PointerAlignment: Right               # "type *ptr"
+DerivePointerAlignment: false
+...
