@@ -9,7 +9,7 @@
 	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
 [submodule "CANLineX2Graphics"]
 	path = CANLineX2Graphics
-	url = https://github.com/RIPHeisenberg/CANLineX2Graphics.git
+	url = git@gitlab.heliosys.dev:kimessa/CANLineX2Graphics.git
 [submodule "CANLineX2Interface"]
 	path = CANLineX2Interface
-	url = https://github.com/RIPHeisenberg/CANLineX2Interface.git
+	url = git@gitlab.heliosys.dev:kimessa/CANLineX2Interface.git
