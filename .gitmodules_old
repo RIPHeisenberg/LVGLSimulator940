@@ -1,0 +1,15 @@
+[submodule "lv_drivers"]
+	path = lv_drivers
+	url = https://github.com/lvgl/lv_drivers.git
+[submodule "lvgl"]
+	path = lvgl
+	url = https://github.com/lvgl/lvgl.git
+[submodule "FreeRTOS"]
+	path = FreeRTOS
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel.git
+[submodule "CANLineX2Graphics"]
+	path = CANLineX2Graphics
+	url = https://github.com/RIPHeisenberg/CANLineX2Graphics.git
+[submodule "CANLineX2Interface"]
+	path = CANLineX2Interface
+	url = https://github.com/RIPHeisenberg/CANLineX2Interface.git
