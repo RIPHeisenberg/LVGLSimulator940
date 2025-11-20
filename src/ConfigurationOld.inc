@@ -5,7 +5,7 @@
     "25.06.2025", // Date of configuration, DD.MM.YYYYY
     "CMX2def", // Name of device, displayed at startup
     0, // LED Matrix type
-    (uint64_t)1234, //+ (MAGIC_NUMBER>>16))* MAGIC_NUMBER, // Password "0000" to "9999"
+    ((uint64_t)0 + (MAGIC_NUMBER>>16))* MAGIC_NUMBER, // Password "0000" to "9999"
     { "A1", "A2", "A3", "A4" }, // Alarmtext
     "Fault", // Fault Text
     "Inhibit", // Inactive Text
@@ -102,7 +102,7 @@
         GD_VS_NORMAL, { 1, 1 }, 10, 0, { 0x00000001, 0x00000000, 0x00000000, 0x00000000}
       },
       {
-        true, GD_M_NORMAL, 300, 0, 0, 0, "PPM", "CO", "Raum_6",
+        false, GD_M_NORMAL, 300, 0, 0, 0, "PPM", "CO", "Raum_6",
         {
           { GD_VS_NORMAL, 50, 35, 60, 300, { 0x00000002, 0x00000000, 0x00000000, 0x00000000 } },
           { GD_VS_NORMAL, 70, 35, 90, 300, { 0x00000004, 0x00000000, 0x00000000, 0x00000000 } },
@@ -192,7 +192,7 @@
         GD_VS_NORMAL, { 1, 1 }, 10, 0, { 0x00000001, 0x00000000, 0x00000000, 0x00000000}
       },
       {
-        true, GD_M_NORMAL, 300, 0, 0, 0, "PPM", "CO", "Raum_15",
+        false, GD_M_NORMAL, 300, 0, 0, 0, "PPM", "CO", "Raum_15",
         {
           { GD_VS_NORMAL, 50, 35, 60, 300, { 0x00000002, 0x00000000, 0x00000000, 0x00000000 } },
           { GD_VS_NORMAL, 70, 35, 90, 300, { 0x00000004, 0x00000000, 0x00000000, 0x00000000 } },
@@ -1469,7 +1469,7 @@
     },
     {
 	  { 0, 0, 0, { 0x00000020, 0x00000000, 0x00000000, 0x00000000 } },  /* Timer 00*/
-      { 0, 0, 0, { 0x00003600, 0x00007000, 0x00000000, 0x00000000 } },  /* Timer 01*/
+      { 0, 0, 0, { 0x00000040, 0x00000000, 0x00000000, 0x00000000 } },  /* Timer 01*/
       { 0, 0, 0, { 0x00000080, 0x00000000, 0x00000000, 0x00000000 } },  /* Timer 02*/
       { 0, 0, 0, { 0x00000080, 0x00000000, 0x00000000, 0x00000000 } }   /* Timer 03*/
     }
