@@ -139,7 +139,6 @@ int main(int argc, char **argv)
  ChartData_init();
  DisplayStateMachine_init();
 
-
   while(1)
   {
     /* Periodically call the lv_task handler.
@@ -163,8 +162,6 @@ int main(int argc, char **argv)
     }
 
    DisplayStateMachine_handler();
-
-
 
    #ifdef _MSC_VER
     Sleep(sleep_time_ms);
