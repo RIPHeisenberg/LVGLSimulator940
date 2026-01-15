@@ -144,9 +144,10 @@ int main(int argc, char **argv)
     /* Periodically call the lv_task handler.
      * It could be done in a timer interrupt or an OS task too.*/
 
-   TimeoutServer_handler();
    static uint32_t refTime = 0;
    static uint32_t delay = 0;
+
+   TimeoutServer_handler();
    delay += TimerLib_ref_delay(&refTime);
    if (delay > 1000)
    {
@@ -159,6 +160,7 @@ int main(int argc, char **argv)
 	      sleep_time_ms =  LV_DEF_REFR_PERIOD;
 
     }
+
    DisplayStateMachine_handler();
 
    #ifdef _MSC_VER
