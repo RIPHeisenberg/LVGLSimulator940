@@ -59,7 +59,7 @@
           { GD_VS_NORMAL, 200, 180, 180,0, { 0x00000008, 0x00000000, 0x00000000, 0x00000000 } },
           { GD_VS_NORMAL, 220, 180, 180,0, { 0x00000010, 0x00000000, 0x00000000, 0x00000000 } }
         },
-        GD_VS_NORMAL, { 1, 1 }, 10, 0, { 0x00000001, 0x00000000, 0x00000000, 0x00000000}
+        GD_VS_NORMAL, { 1, 1 }, 10, 0, { 0x00000002, 0x00000000, 0x00000000, 0x00000000}
       },
       {
         true, GD_M_NORMAL, 300, 0, 0, 0, "PPM", "CO", "Raum_2",
@@ -1336,9 +1336,9 @@
       /* Segment 1 (direct) */
       /* Actv  Energ  Pulse  ManRst ImmRst Beeper MaxOntime */
       { true,  true,  false, false, false, false, 0 }, /* Relay 00*/
-      { true,  false, false, false, false, false, 0 }, /* Relay 01*/
-      { true,  false, false, false, false, true , 0 }, /* Relay 02*/
-      { true,  false, false, false, false, true , 0 }, /* Relay 03*/
+      { true,  false, false, true, false, false, 0 }, /* Relay 01*/
+      { true,  false, false, true, false, true , 0 }, /* Relay 02*/
+      { true,  false, false, true, false, true , 0 }, /* Relay 03*/
       { true,  false, false, false, false, true , 0 }, /* Relay 04*/
       { true,  false, false, false, false, false, 0 }, /* Relay 05*/
       { true,  false, false, false, false, false, 0 }, /* Relay 06*/
