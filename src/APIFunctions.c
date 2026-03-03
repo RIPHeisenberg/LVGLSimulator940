@@ -1,9 +1,9 @@
 #include <unistd.h>
 #include "Configuration.h"
-#include "App.h"
+//#include "App.h"
 
 // Define the App variable for the simulator (declared extern in App.h)
-App_t App = {0};
+//App_t App = {0};
 
 static Configuration_SettingsDescriptor_t settingsConfigurationFlash =
 #include "Configuration.inc"    //lint !e9019
