@@ -32,6 +32,7 @@
 #include "hal/hal.h"
 #include "CANLineX2Graphics/RingBuffer.h"
 #include "CANLineX2Interface/TimeoutServer/TimeoutServer.h"
+#include "CANLineX2Interface/ConfigurationHandler.h"
 #include "TimerLib.h"
 /*********************
  *      DEFINES
@@ -44,69 +45,10 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
+static int keyboard_event_watcher(void *userdata, SDL_Event *event);
 
 /**********************
  *  STATIC VARIABLES
- **********************/
-
-/**********************
- *      MACROS
- **********************/
-
-/**********************
- *   GLOBAL FUNCTIONS
- **********************/
-
-/**********************
- *   STATIC FUNCTIONS
- **********************/
-/**
- * @file main
- *
- */
-
-/*********************
- *      INCLUDES
- *********************/
-
-/*********************
- *      DEFINES
- *********************/
-
-/**********************
- *      TYPEDEFS
- **********************/
-
-/**********************
- *  STATIC PROTOTYPES
- **********************/
-
-/**********************
- *  STATIC VARIABLES
- **********************/
-
-/**********************
- *      MACROS
- **********************/
-
-/**********************
- *   GLOBAL FUNCTIONS
- **********************/
-
-/*********************
- *      DEFINES
- *********************/
-
-/**********************
- *      TYPEDEFS
- **********************/
-
-/**********************
- *      VARIABLES
- **********************/
-
-/**********************
- *  STATIC PROTOTYPES
  **********************/
 
 /**********************
@@ -138,6 +80,8 @@ int main(int argc, char **argv)
 
  ChartData_init();
  DisplayStateMachine_init();
+
+  SDL_AddEventWatch(keyboard_event_watcher, NULL);
 
   while(1)
   {
@@ -179,4 +123,20 @@ int main(int argc, char **argv)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+
+static int keyboard_event_watcher(void *userdata, SDL_Event *event)
+{
+  (void)userdata;
+
+  if (event->type == SDL_KEYDOWN)
+  {
+    const char *keyName = SDL_GetKeyName(event->key.keysym.sym);
+    printf("Key pressed: %s (scancode: %d, keycode: %d)\n",
+           keyName, event->key.keysym.scancode, event->key.keysym.sym);
+
+    ConfigurationHandler_SetKeyValue(keyName);
+  }
+
+  return 1;
+}
 
