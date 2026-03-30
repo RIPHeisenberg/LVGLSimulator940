@@ -17,7 +17,7 @@
     60, // StartupTimeS
     3500U, // BeeperFrequency
     20000,  // ServiceInterval
-    32, // nr of Sensors
+    59, // nr of Sensors
     32, // nr of Relays
     false, // Relay 2 true: used for exceptions, false: free configurable
     { /* Sensors */
